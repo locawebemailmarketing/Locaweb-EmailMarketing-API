@@ -7,7 +7,7 @@
 	$hostName = '';
 	$login 	  = '';
 	$chaveApi = '';
-	$repositorio = new RepositorioContatos($hostName, $login, $chaveApi,"locaweb.com.br");
+	$repositorio = new RepositorioContatos($hostName, $login, $chaveApi);
 
 	print "\ncontatos validos\n";
 	for($pagina=1; $contatos = $repositorio->obterValidos($pagina); $pagina++) {
