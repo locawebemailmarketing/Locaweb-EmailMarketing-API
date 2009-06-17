@@ -49,7 +49,7 @@ class EmktCore {
 			throw new EmktApiException("Erro inesperado, falta algum " .
 					"parametro na url ou algum problema na rede.");
 		}
-		if ($http_code != '200' && $http_code != '201') {
+		if ($http_code != '200') {
 			throw new EmktApiException("Erro inesperado: " .
 					"statusCode:$http_code, mensagem:$resultado_http");
 		}
