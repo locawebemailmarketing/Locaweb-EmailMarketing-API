@@ -46,9 +46,8 @@ class TestRepositorioContatos extends PHPUnit_Framework_TestCase {
 			->will($this->returnValue($respostaMock));
 		$contatos = $this->repositorio->obterValidos(1);
 		$this->assertEquals(1, count($contatos));
-		$this->assertEquals('xconta4@testecarganl.tecnologia.ws',
-			 $contatos[0]->email);
-		$this->assertEquals('nomeTeste', $contatos[0]->nome);
+		$this->assertEquals('xconta4@testecarganl.tecnologia.ws',$contatos[0]['email']);
+		$this->assertEquals('nomeTeste', $contatos[0]['nome']);
 	}
 
 	function testObterValidosDeveLancarUmaExcecaoComErroDeParseNoJson() {
