@@ -36,7 +36,7 @@ class RepositorioMensagens {
 	 * @param string Chave gerada para uso dessa API.
 	 */
 	public function RepositorioMensagens($hostName, $login, $chave,
-		 $hostNameSufix='locaweb.com.br', EmktCore $emktCore = null) {
+		 $hostNameSufix='.locaweb.com.br', EmktCore $emktCore = null) {
 		// hostNameSufix de producao tecnologia.ws
 		$this->hostName = $hostName;
 		$this->login = $login;
@@ -49,8 +49,8 @@ class RepositorioMensagens {
 	}
 
 	private function geraUrl() {
-		return "http://{$this->hostName}.{$this->hostNameSufix}/admin/api/" .
-				"{$this->login}/contatos/mensagem";
+		return "http://{$this->hostName}{$this->hostNameSufix}/admin/api/" .
+				"{$this->login}/mensagem";
 	}
 
 	/**
@@ -58,23 +58,8 @@ class RepositorioMensagens {
 	 * devem necessariamente, mesmo que em branco estarem
 	 * contidos no array:
 	 *
-	 * identificador: Um nome que identifique a mensagem. Ex: "Mensagem 001"
-	 * assunto: Titulo da mensagem. Ex: "Promoção queima de estoque"
-	 * nome_remetente: O nome do remetente da mensagem. Ex: "Loja Certa"
-	 * email_remetente: Email do remetente. Ex: duvida??
-	 * dominio_dos_links:
-	 * id_campanha: Numero de identificacao da campanha. Ex: 326545
-	 * formato: A mensagem pode ser enviada no formato 'Texto' ou 'HTML ou
-	 * 			em ambos os formato 'Texto ou Html'.
-	 * url_mensagem_html: O link para o conteudo da mensagem HTML. Ex:
-	 * 					  http//newnsLetter.meu.dominio.com.br
-	 * mensagem_texto: Mensagem texto. Ex: 'Minha mensagem de texto.'
-	 * incluir_link_visualizacao: Opcao de incluir o link de visualizacao, valores
-	 * 							  possiveis 'true' ou 'false'
-	 * texto_link_visualizacao: Texto para descadastramento de usuario,
-	 *                          eh importante que o texto contenha alguma
-	 *                          frase entre '['. Ex:  Caso nao visualize
-	 *                          esse email adequadamente [acesse este link]
+	 * @see http://wiki.locaweb.com.br/pt-br/APIs_do_Email_Marketing#criacao
+	 *
 	 */
 	public function adicionarMensagem($atributosMensagem) {
 		if(empty($atributosMensagem)) {
@@ -88,7 +73,10 @@ class RepositorioMensagens {
 		}
 		$url = $this->geraUrl() .  "?chave={$this->chave}";
 
-		return $this->emktCore->enviaRequisicaoPost($url, $atributosMensagemJson);
+		$resultadoJson = $this->emktCore->enviaRequisicaoPost($url, $atributosMensagemJson);
+		$resultado = json_decode($resultadoJson, true);
+
+		return $resultado['id_mensagem'];
 	}
 
 	private function encodeUtf8($atributosMensagem) {

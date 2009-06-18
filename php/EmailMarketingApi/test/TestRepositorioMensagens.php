@@ -16,8 +16,8 @@ class TestRepositorioMensagens extends PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->emktCoreMock= $this->getMock("EmktCore");
-		$this->repositorio= new RepositorioMensagens("test", "gustavo", "e538ea", "locaweb.com.br", $this->emktCoreMock);
-		$this->urlEsperada= 'http://test.locaweb.com.br/admin/api/gustavo/contatos/mensagem?chave=e538ea';
+		$this->repositorio= new RepositorioMensagens("test", "gustavo", "e538ea", ".locaweb.com.br", $this->emktCoreMock);
+		$this->urlEsperada= 'http://test.locaweb.com.br/admin/api/gustavo/mensagem?chave=e538ea';
 	}
 
 	public function testAdicionarMensagemUrlDeveSerValida() {
@@ -35,11 +35,11 @@ class TestRepositorioMensagens extends PHPUnit_Framework_TestCase {
 				'"mensagem_texto":"mensagem de texto","incluir_link_visualizacao":"true",' .
 				'"texto_link_visualizacao":"Caso n\u00e3o visualize esse email ' .
 				'adequadamente [acesse este link]"}';
-		$idMensagemEsperado = 123;
+		$idMensagemEsperado = '123';
 		$atributosMensagemJsonEsperador = "";
 		$this->emktCoreMock->expects($this->once())->method('enviaRequisicaoPost')
 				->with($this->urlEsperada, $jsonEsperado)
-				->will($this->returnValue($idMensagemEsperado));
+				->will($this->returnValue('{"id_mensagem":123}'));
 
 		$atributosMensagem = array (
 			"identificador" => "teste",
