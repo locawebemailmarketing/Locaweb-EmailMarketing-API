@@ -4,10 +4,10 @@ require_once dirname(__FILE__) . '/lib/RepositorioMensagens.php';
 
 // Esses valores podem ser obtidos na página de configurações do
 // Email Marketing
-$hostName= 'testelmm.tecnologia.ws';
-$login= 'teste';
-$chaveApi= '8c4b5c8b70fa2ef5b003f09ce1ecf6d6';
-$repositorio= new RepositorioMensagens($hostName, $login, $chaveApi, '');
+$hostName= '';
+$login= '';
+$chaveApi= '';
+$repositorio= new RepositorioMensagens($hostName, $login, $chaveApi);
 
 $arrMensagem = array (
 	"identificador" => "teste1",
