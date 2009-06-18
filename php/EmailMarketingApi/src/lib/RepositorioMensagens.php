@@ -37,7 +37,6 @@ class RepositorioMensagens {
 	 */
 	public function RepositorioMensagens($hostName, $login, $chave,
 		 $hostNameSufix='.locaweb.com.br', EmktCore $emktCore = null) {
-		// hostNameSufix de producao tecnologia.ws
 		$this->hostName = $hostName;
 		$this->login = $login;
 		$this->chave = $chave;
