@@ -25,8 +25,26 @@ class EmktCore {
 		return $resultado_http;
 	}
 
-	public function enviaRequisicaoPut($url, $dadosPost) {
-		return $this->enviaRequisicao($url, $dadosPost, CURLOPT_PUT);
+	public function enviaRequisicaoPut($url, $dadosPut) {
+		$ch= curl_init();
+
+		$putData = tmpfile();
+		fwrite($putData, $dadosPut);
+		fseek($putData, 0);
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_PUT, true);
+		curl_setopt($ch, CURLOPT_INFILE, $putData);
+		curl_setopt($ch, CURLOPT_INFILESIZE, strlen($dadosPut));
+
+		$resultado_http = curl_exec($ch);
+		$http_code= curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		fclose($putData);
+		curl_close($ch);
+
+		$this->validaCodigoHttp($http_code, $resultado_http);
+
+		return $resultado_http;
 	}
 
 	/**
@@ -54,11 +72,11 @@ class EmktCore {
 
 	function validaCodigoHttp($http_code, $resultado_http= '') {
 		if (empty ($http_code)) {
-			throw new EmktApiException("Erro inesperado, falta algum " .
+			throw new EmktApiException("Erro na chamada do webservice, falta algum " .
 			"parametro na url ou algum problema na rede.");
 		}
 		if ($http_code != '200') {
-			throw new EmktApiException("Erro inesperado: " .
+			throw new EmktApiException("Erro na chamada do webservice: " .
 			"statusCode:$http_code, mensagem:$resultado_http");
 		}
 	}

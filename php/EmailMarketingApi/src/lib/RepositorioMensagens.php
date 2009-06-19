@@ -62,7 +62,7 @@ class RepositorioMensagens {
 	 */
 	public function adicionarMensagem($atributosMensagem) {
 		if(empty($atributosMensagem)) {
-			throw new EmktApiException('Atributos da mensagem nao devem estar vazios.');
+			throw new EmktApiException('Atributos da mensagem nao podem estar vazios.');
 		}
 		// Faz o UTF8 Encode dos Atributos
 		$atributosMensagem = $this->encodeUtf8($atributosMensagem);
@@ -92,6 +92,7 @@ class RepositorioMensagens {
 		if(empty($mensagemId)) {
 			throw new EmktApiException('Id da mensagem nao deve estar vazios.');
 		}
+		$atributosAgendamento = $this->encodeUtf8($atributosAgendamento);
 		$atributosMensagemJson = json_encode($atributosAgendamento);
 		$url = $this->geraUrl() . "/$mensagemId" . "?chave={$this->chave}";
 		$resultadoJson = $this->emktCore->enviaRequisicaoPut($url, $atributosMensagemJson);
