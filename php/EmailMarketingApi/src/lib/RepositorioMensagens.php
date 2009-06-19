@@ -70,12 +70,31 @@ class RepositorioMensagens {
 		if($atributosMensagemJson==null){
 			throw new EmktApiException('Atributos da mensagem invalidos.');
 		}
-		$url = $this->geraUrl() .  "?chave={$this->chave}";
+		$url = $this->geraUrl() . "?chave={$this->chave}";
 
 		$resultadoJson = $this->emktCore->enviaRequisicaoPost($url, $atributosMensagemJson);
 		$resultado = json_decode($resultadoJson, true);
 
 		return $resultado['id_mensagem'];
+	}
+
+	/**
+	 * @param array $atributosAgendamento São os atributos para o agendamento
+	 * @param string $mensagemId Id da mensagem.
+	 *
+	 * @see http://wiki.locaweb.com.br/pt-br/APIs_do_Email_Marketing#agendamento
+	 *
+	 */
+	public function agendarMensagem($atributosAgendamento, $mensagemId) {
+		if(empty($atributosAgendamento)) {
+			throw new EmktApiException('Atributos da mensagem nao devem estar vazios.');
+		}
+		if(empty($mensagemId)) {
+			throw new EmktApiException('Id da mensagem nao deve estar vazios.');
+		}
+		$atributosMensagemJson = json_encode($atributosAgendamento);
+		$url = $this->geraUrl() . "/$mensagemId" . "?chave={$this->chave}";
+		$resultadoJson = $this->emktCore->enviaRequisicaoPut($url, $atributosMensagemJson);
 	}
 
 	private function encodeUtf8($atributosMensagem) {
@@ -86,6 +105,5 @@ class RepositorioMensagens {
 
 		return $atributosMensagemUtf8;
 	}
-
 }
 ?>
