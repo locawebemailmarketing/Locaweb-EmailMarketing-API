@@ -16,7 +16,7 @@ class TestRepositorioContatos extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->emktCoreMock = $this->getMock("EmktCore");
 		$this->repositorio = new RepositorioContatos("test", "gustavo",
-			"e538ea", 'locaweb.com.br',
+			"e538ea", '.locaweb.com.br',
 			 $this->emktCoreMock);
 		$this->urlObterContatosEsperada = "http://test.locaweb.com.br/admin/api/gustavo/" .
 			"contatos/validos?chave=e538ea" .
@@ -84,7 +84,7 @@ class TestRepositorioContatos extends PHPUnit_Framework_TestCase {
 	}
 
 	function testImportarUmContatoEmUmaLista() {
-		$urlEsperada = 'http://test.locaweb.com.br/admin/api/gustavo/contatos/importacao?lista=1&chave=e538ea';
+		$urlEsperada = 'http://test.locaweb.com.br/admin/api/gustavo/contatos/importacao?listas=1&chave=e538ea';
 		$arrContatos = array(array("email"=>"exemplo@test.com.br","nome"=>"nome1"));
 		$contatosJson = '[{"email":"exemplo@test.com.br","nome":"nome1"}]';
 
@@ -95,7 +95,7 @@ class TestRepositorioContatos extends PHPUnit_Framework_TestCase {
 
 	function testImportarDoisContatosEmDuasListas() {
 		$urlEsperada = 'http://test.locaweb.com.br/admin/api/gustavo/' .
-				'contatos/importacao?lista=1;2&chave=e538ea';
+				'contatos/importacao?listas=1;2&chave=e538ea';
 		$contatos = array(
 				array("email"=>"exemplo1@test.com.br","nome"=>"nome1"),
 				array("email"=>"exemplo2@test.com.br","nome"=>"nome2")
@@ -119,7 +119,7 @@ class TestRepositorioContatos extends PHPUnit_Framework_TestCase {
 
 	function testImportarContendoCaracteresAcentuados() {
 		$urlEsperada = 'http://test.locaweb.com.br/admin/api/gustavo/' .
-				'contatos/importacao?lista=1&chave=e538ea';
+				'contatos/importacao?listas=1&chave=e538ea';
 		$contatos = array(array("email"=>"exemplo1@test.com.br","nome"=>"José"));
 		$contatosJson = '[{"email":"exemplo1@test.com.br","nome":"Jos\u00e9"}]';
 		$this->emktCoreMock->expects($this->once())->method('enviaRequisicaoPost')
