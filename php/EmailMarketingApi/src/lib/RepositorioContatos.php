@@ -95,7 +95,7 @@ class RepositorioContatos {
 	}
 
 	private function geraUrl() {
-		return "http://{$this->hostName}.{$this->hostNameSufix}/admin/api/" .
+		return "http://{$this->hostName}{$this->hostNameSufix}/admin/api/" .
 				"{$this->login}/contatos";
 	}
 
@@ -135,7 +135,7 @@ class RepositorioContatos {
 			throw new EmktApiException("Array de contatos nao pode ser vazio.");
 		}
 
-		$url = $this->geraUrl() ."/importacao?lista=" . implode(";", $listaIds). "&chave={$this->chave}";
+		$url = $this->geraUrl() ."/importacao?listas=" . implode(";", $listaIds). "&chave={$this->chave}";
 
 		foreach($arrContatos as $numLine => $line){
 			foreach($line as $key => $val) {

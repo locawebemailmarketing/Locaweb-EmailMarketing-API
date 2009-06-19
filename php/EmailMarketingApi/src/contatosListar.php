@@ -18,6 +18,7 @@
 					", nome: {$contato['nome']}" .
 					", datanasc: {$contato['datadenascimento']}" .
 					", estado: {$contato['estado']}" .
+					", sexo: {$contato['sexo']}" .
 					"\n";
 		}
 	}
