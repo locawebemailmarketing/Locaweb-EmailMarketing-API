@@ -23,18 +23,28 @@ class TestRepositorioContatos extends PHPUnit_Framework_TestCase {
 			"&pagina=1";
 	}
 
-	function testObterValidosUrlValida() {
+	function testObterContatosUrlValidaSemIdLista() {
 		$this->emktCoreMock->expects($this->once())
 			->method('enviaRequisicaoGet')
 			->with($this->urlObterContatosEsperada);
-		$this->repositorio->obterValidos(1);
+		$this->repositorio->obterContatos(RepositorioContatos::VALIDOS, 1);
+	}
+
+	function testObterContatosUrlValidaComIdLista() {
+		$urlEsperada = "http://test.locaweb.com.br/admin/api/gustavo/" .
+			"contatos/validos?lista=1&chave=e538ea" .
+			"&pagina=1";
+		$this->emktCoreMock->expects($this->once())
+			->method('enviaRequisicaoGet')
+			->with($urlEsperada);
+		$this->repositorio->obterContatos(RepositorioContatos::VALIDOS, 1, 1);
 	}
 
 	function testObterValidosDeveRetornarNull() {
 		$this->emktCoreMock->expects($this->once())
 			->method('enviaRequisicaoGet')
 			->with($this->urlObterContatosEsperada);
-		$this->assertNull($this->repositorio->obterValidos(1));
+		$this->assertNull($this->repositorio->obterContatos(RepositorioContatos::VALIDOS, 1));
 	}
 
 	function testObterValidosDeveRetornarUmContatoValido() {
@@ -44,7 +54,7 @@ class TestRepositorioContatos extends PHPUnit_Framework_TestCase {
 		$this->emktCoreMock->expects($this->once())->method('enviaRequisicaoGet')
 			->with($this->urlObterContatosEsperada)
 			->will($this->returnValue($respostaMock));
-		$contatos = $this->repositorio->obterValidos(1);
+		$contatos = $this->repositorio->obterContatos(RepositorioContatos::VALIDOS, 1);
 		$this->assertEquals(1, count($contatos));
 		$this->assertEquals('xconta4@testecarganl.tecnologia.ws',$contatos[0]['email']);
 		$this->assertEquals('nomeTeste', $contatos[0]['nome']);
@@ -56,7 +66,7 @@ class TestRepositorioContatos extends PHPUnit_Framework_TestCase {
 			->with($this->urlObterContatosEsperada)
 			->will($this->returnValue($respostaMock));
 		try {
-			$contatos = $this->repositorio->obterValidos(1);
+			$contatos = $this->repositorio->obterContatos(RepositorioContatos::VALIDOS, 1);
 			$this->assertFail("EmktApiException esperada nao ocorreu.");
 		} catch (EmktApiException $e){
 			$this->assertTrue(true);

@@ -30,6 +30,11 @@ class RepositorioContatos {
 
 	private $hostNameSufix;
 
+	const VALIDOS = 'validos';
+	const INVALIDOS = 'invalidos';
+	const NAO_CONFIRMADOS = 'nao_confirmados';
+	const DESCADASTRADOS = 'descadastrados';
+
 	/**
 	 * @param string hostName usado no Email Marketing.
 	 * @param string Login usado no Email Marketing.
@@ -59,49 +64,23 @@ class RepositorioContatos {
  */
 
 	/**
-	 * Obter todos os contatos que estão no estado válido.
+	 * Retorna contatos.
 	 *
-	 * @param integer pagina
+	 * @param string  status do contatos, podem ser validos, invalidos,
+	 *  			  nao_confirmados ou descadastrados.
+	 * @param integer pagina, número da paginação da busca.
+	 * @param integer idLista, id da lista que estão os contatos que se
+	 *                deseja obter.
 	 */
-	public function obterValidos($pagina=1){
-		return $this->obterPorStatus($pagina,'validos');
-	}
+	public function obterContatos($status, $pagina=1, $idLista=0) {
 
-	/**
-	 * Obter todos os contatos que estão no estado inválido.
-	 *
-	 * @param integer pagina
-	 */
-	public function obterInvalidos($pagina=1){
-		return $this->obterPorStatus($pagina,'invalidos');
-	}
+		$listaParametro = '';
+		if($idLista) {
+			$listaParametro = "lista=$idLista&";
+		}
 
-	/**
-	 * Obter todos os contatos que estão no estado não confirmados.
-	 *
-	 * @param integer pagina
-	 */
-	public function obterNaoConfirmados($pagina=1){
-		return $this->obterPorStatus($pagina,'nao_confirmados');
-	}
-
-	/**
-	 * Obter todos os contatos que estão no estado descadastrados.
-	 *
-	 * @param integer pagina
-	 */
-	public function obterDescadastrados($pagina=1){
-		return $this->obterPorStatus($pagina,'descadastrados');
-	}
-
-	private function geraUrl() {
-		return "http://{$this->hostName}{$this->hostNameSufix}/admin/api/" .
-				"{$this->login}/contatos";
-	}
-
-	private function obterPorStatus($pagina=1, $status) {
 		$url = $this->geraUrl() .
-			"/{$status}?chave={$this->chave}&pagina={$pagina}";
+			"/{$status}?".$listaParametro."chave={$this->chave}&pagina={$pagina}";
 
 		$resultado = $this->emktCore->enviaRequisicaoGet($url);
 		if($resultado==null) {
@@ -146,6 +125,11 @@ class RepositorioContatos {
 		$contatosJson = json_encode($arrContatos);
 
 		return $this->emktCore->enviaRequisicaoPost($url, $contatosJson);
+	}
+
+	private function geraUrl() {
+		return "http://{$this->hostName}{$this->hostNameSufix}/admin/api/" .
+				"{$this->login}/contatos";
 	}
 }
 ?>

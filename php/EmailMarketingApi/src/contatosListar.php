@@ -10,7 +10,7 @@
 	$repositorio = new RepositorioContatos($hostName, $login, $chaveApi);
 
 	print "\ncontatos validos\n";
-	for($pagina=1; $contatos = $repositorio->obterValidos($pagina); $pagina++) {
+	for($pagina=1; $contatos = $repositorio->obterContatos(RepositorioContatos::VALIDOS, $pagina); $pagina++) {
 		foreach($contatos as $contato) {
 			//se desejar visualizar todos os campos disponíveis, descomentar a linha abaixo:
 			//print join(',',array_keys($contato)); exit;
@@ -22,4 +22,20 @@
 					"\n";
 		}
 	}
+
+	print "\ncontatos validos da lista 1\n";
+	for($pagina=1; $contatos = $repositorio->obterContatos(RepositorioContatos::VALIDOS, $pagina, 1); $pagina++) {
+		foreach($contatos as $contato) {
+			//se desejar visualizar todos os campos disponíveis, descomentar a linha abaixo:
+			//print join(',',array_keys($contato)); exit;
+			print "email: {$contato['email']}" .
+					", nome: {$contato['nome']}" .
+					", datanasc: {$contato['datadenascimento']}" .
+					", estado: {$contato['estado']}" .
+					", sexo: {$contato['sexo']}" .
+					"\n";
+		}
+	}
+
+
 ?>
