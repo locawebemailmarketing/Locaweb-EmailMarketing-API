@@ -137,5 +137,27 @@ class TestRepositorioContatos extends PHPUnit_Framework_TestCase {
 		$listaIds = array(1);
 		$this->repositorio->importar($contatos, $listaIds);
 	}
+
+	function testDesativarDeveGerarUrlCorretaSeTiverParametroListas(){
+		$urlEsperada = 'http://test.locaweb.com.br/admin/api/gustavo/' .
+				'contatos/desativacao?chave=e538ea&listas=1;2';
+		$contatos = array(array("email"=>"exemplo1@test.com.br"));
+		$contatosJson = '[{"email":"exemplo1@test.com.br"}]';
+		$this->emktCoreMock->expects($this->once())->method('enviaRequisicaoPut')
+			->with($urlEsperada, $contatosJson);
+		$listaIds = array(1,2);
+		$this->repositorio->desativar($contatos, $listaIds);
+	}
+
+	function testDesativarDeveGerarUrlCorretaSeNaoTiverParametroListas(){
+		$urlEsperada = 'http://test.locaweb.com.br/admin/api/gustavo/' .
+				'contatos/desativacao?chave=e538ea';
+		$contatos = array(array("email"=>"exemplo1@test.com.br"));
+		$contatosJson = '[{"email":"exemplo1@test.com.br"}]';
+		$this->emktCoreMock->expects($this->once())->method('enviaRequisicaoPut')
+			->with($urlEsperada, $contatosJson);
+		$listaIds = array();
+		$this->repositorio->desativar($contatos, $listaIds);
+	}
 }
 ?>

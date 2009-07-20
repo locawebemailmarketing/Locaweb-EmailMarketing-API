@@ -127,6 +127,33 @@ class RepositorioContatos {
 		return $this->emktCore->enviaRequisicaoPost($url, $contatosJson);
 	}
 
+	/**
+	 * Desativa um contato ou remove de lista caso seja passado o ID de Listas
+	 *
+	 * @param array $arrContatos
+	 * @param array $listaIds
+	 */
+	public function desativar($arrContatos, $listaIds=array()){
+		if(!is_array($arrContatos) || empty($arrContatos)){
+			throw new EmktApiException("Array de contatos nao pode ser vazio.");
+		}
+
+		$url = $this->geraUrl() ."/desativacao?chave={$this->chave}";
+		if(count($listaIds)>0){
+			$url.= "&listas=" . implode(";", $listaIds);
+		}
+
+		foreach($arrContatos as $numLine => $line){
+			foreach($line as $key => $val) {
+				$arrContatos[$numLine][$key] = utf8_encode($val);
+			}
+		}
+
+		$contatosJson = json_encode($arrContatos);
+
+		return $this->emktCore->enviaRequisicaoPut($url, $contatosJson);
+	}
+
 	private function geraUrl() {
 		return "http://{$this->hostName}{$this->hostNameSufix}/admin/api/" .
 				"{$this->login}/contatos";
